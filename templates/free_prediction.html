@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Free Prediction - Quake Pred{% endblock %}
+
+{% block content %}
+<section class="prediction-section">
+    <div class="section-header">
+        <h2>Free Earthquake Prediction</h2>
+        <p>Enter seismic parameters below to get instant alert level prediction</p>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Note:</strong> Free predictions are limited. <a href="{{ url_for('signup') }}" class="alert-link">Sign up</a>
+        for unlimited predictions, prediction history, and advanced features.
+    </div>
+
+    <form method="POST" action="{{ url_for('make_prediction') }}" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="magnitude" class="form-label">
+                        <i class="fas fa-wave-square me-1"></i>Magnitude (Richter Scale)
+                    </label>
+                    <input type="number" step="0.01" class="form-control" id="magnitude" name="magnitude"
+                           placeholder="e.g., 7.2" required min="1" max="10">
+                    <div class="invalid-feedback">
+                        Please enter a valid magnitude between 1.0 and 10.0
+                    </div>
+                    <small class="form-text text-muted">
+                        Earthquake magnitude on Richter scale (1.0 - 10.0)
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="depth" class="form-label">
+                        <i class="fas fa-mountain me-1"></i>Depth (km)
+                    </label>
+                    <input type="number" step="0.1" class="form-control" id="depth" name="depth"
+                           placeholder="e.g., 10.5" required min="0" max="700">
+                    <div class="invalid-feedback">
+                        Please enter a valid depth between 0 and 700 km
+                    </div>
+                    <small class="form-text text-muted">
+                        Depth of earthquake epicenter in kilometers
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cdi" class="form-label">
+                        <i class="fas fa-users me-1"></i>CDI (Community Decimal Intensity)
+                    </label>
+                    <input type="number" step="0.1" class="form-control" id="cdi" name="cdi"
+                           placeholder="e.g., 8.0" required min="0" max="12">
+                    <div class="invalid-feedback">
+                        Please enter a valid CDI between 0.0 and 12.0
+                    </div>
+                    <small class="form-text text-muted">
+                        Community Decimal Intensity scale (0-12)
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="mmi" class="form-label">
+                        <i class="fas fa-ruler-combined me-1"></i>MMI (Modified Mercalli Intensity)
+                    </label>
+                    <input type="number" step="0.1" class="form-control" id="mmi" name="mmi"
+                           placeholder="e.g., 7.5" required min="1" max="12">
+                    <div class="invalid-feedback">
+                        Please enter a valid MMI between 1.0 and 12.0
+                    </div>
+                    <small class="form-text text-muted">
+                        Modified Mercalli Intensity scale (I-XII)
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="sig" class="form-label">
+                        <i class="fas fa-chart-line me-1"></i>Significance Score
+                    </label>
+                    <input type="number" step="1" class="form-control" id="sig" name="sig"
+                           placeholder="e.g., 300" required min="-1000" max="1000">
+                    <div class="invalid-feedback">
+                        Please enter a valid significance score between -1000 and 1000
+                    </div>
+                    <small class="form-text text-muted">
+                        Significance score based on impact and population exposure
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                <i class="fas fa-calculator me-2"></i>Get Prediction
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- Sample Predictions -->
+<section class="mt-5">
+    <div class="container">
+        <h3 class="mb-4">Sample Predictions</h3>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="alert-flash-card green-alert p-3 text-center">
+                    <h5 class="mb-1">GREEN</h5>
+                    <small class="d-block">Magnitude: 4.5</small>
+                    <small class="d-block">Depth: 50km</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="alert-flash-card yellow-alert p-3 text-center">
+                    <h5 class="mb-1">YELLOW</h5>
+                    <small class="d-block">Magnitude: 5.8</small>
+                    <small class="d-block">Depth: 30km</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="alert-flash-card orange-alert p-3 text-center">
+                    <h5 class="mb-1">ORANGE</h5>
+                    <small class="d-block">Magnitude: 6.5</small>
+                    <small class="d-block">Depth: 20km</small>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="alert-flash-card red-alert p-3 text-center">
+                    <h5 class="mb-1">RED</h5>
+                    <small class="d-block">Magnitude: 7.2</small>
+                    <small class="d-block">Depth: 10km</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add input validation
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            const min = parseFloat(this.min);
+            const max = parseFloat(this.max);
+
+            if (value < min || value > max) {
+                this.setCustomValidity(`Please enter a value between ${min} and ${max}`);
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

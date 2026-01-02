@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Quake Pred{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title">Predict Earthquake Alerts with Machine Learning Precision</h1>
+                <p class="hero-subtitle">
+                    Our advanced Random Forest model analyzes seismic data to predict alert levels in real-time.
+                    Stay informed and prepared with accurate earthquake predictions.
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{{ url_for('free_prediction') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-bolt me-2"></i>Try Free Prediction
+                    </a>
+                    <a href="{{ url_for('predict') }}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-calculator me-2"></i>Advanced Predict
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="p-4">
+                    <div class="bg-white p-4 rounded-xl shadow-lg animate__animated animate__fadeInUp">
+                        <h4 class="font-bold mb-3 text-center">Live Prediction Example</h4>
+                        <div id="flashcard-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1500">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active h-100">
+                                    <div class="alert-flash-card red-alert mb-3 h-100">
+                                        <h3 class="alert-level">RED ALERT</h3>
+                                        <p class="mb-0">High probability of significant seismic activity. Take immediate action.</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="alert-flash-card orange-alert mb-3 h-100">
+                                        <h3 class="alert-level">ORANGE ALERT</h3>
+                                        <p class="mb-0">High risk of damage. Prepare emergency kits & identify safe zones.</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="alert-flash-card yellow-alert mb-3 h-100">
+                                        <h3 class="alert-level">YELLOW ALERT</h3>
+                                        <p class="mb-0">Moderate risk. Monitor situation & review emergency plans.</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="alert-flash-card green-alert mb-3 h-100">
+                                        <h3 class="alert-level">GREEN ALERT</h3>
+                                        <p class="mb-0">Low risk. Normal conditions expected.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Why Choose Quake Pred?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">Advanced AI Model</h3>
+                <p class="feature-description">
+                    Powered by Random Forest algorithm with 94.6% accuracy, trained on thousands of seismic data points.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">Real-time Predictions</h3>
+                <p class="feature-description">
+                    Get instant earthquake alert predictions based on current seismic parameters.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">Safety First</h3>
+                <p class="feature-description">
+                    Early warning system to help you prepare and stay safe during seismic activities.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="feature-title">Detailed Analytics</h3>
+                <p class="feature-description">
+                    Visual probability distributions and detailed analysis of prediction results.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="text-center p-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-sliders-h fa-2x"></i>
+                    </div>
+                    <h4>1. Input Parameters</h4>
+                    <p>Enter seismic parameters: Magnitude, Depth, CDI, MMI, and Significance Score.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="text-center p-3">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content: center; mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-cogs fa-2x"></i>
+                    </div>
+                    <h4>2. AI Analysis</h4>
+                    <p>Our Random Forest model processes the data using advanced machine learning algorithms.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="text-center p-3">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-pie fa-2x"></i>
+                    </div>
+                    <h4>3. Get Results</h4>
+                    <p>Receive detailed alert level predictions with probability distributions and visual charts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What We Predict Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">What We Predict</h2>
+        <p class="text-center text-muted lead mb-4">Understanding the key seismic parameters for accurate predictions.</p>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon" style="background: var(--warning-gradient);"><i class="fas fa-balance-scale"></i></div>
+                    <h3 class="feature-title">Magnitude</h3>
+                    <p class="feature-description">Measures the size of the earthquake at its source. Higher magnitudes generally mean more severe quakes and higher alert levels.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon" style="background: var(--info-color);"><i class="fas fa-globe-americas"></i></div>
+                    <h3 class="feature-title">Depth (km)</h3>
+                    <p class="feature-description">The distance from the Earth's surface to the earthquake's hypocenter. Shallow earthquakes often cause more intense shaking and damage on the surface.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon" style="background: var(--success-gradient);"><i class="fas fa-home"></i></div>
+                    <h3 class="feature-title">CDI (Community Decimal Intensity)</h3>
+                    <p class="feature-description">Represents the perceived shaking and damage in a community. It's a measure of how strongly an earthquake is felt in a particular location.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon" style="background: var(--danger-gradient);"><i class="fas fa-frown"></i></div>
+                    <h3 class="feature-title">MMI (Modified Mercalli Intensity)</h3>
+                    <p class="feature-description">Describes the severity of an earthquake in terms of its observed effects on people and structures. Higher MMI values indicate greater impact.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon" style="background: var(--primary-gradient);"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="feature-title">Significance Score (sig)</h3>
+                    <p class="feature-description">A comprehensive score reflecting the potential impact of an event, considering magnitude, intensity, and population exposure. Higher values imply greater significance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h2 class="mb-4">Ready to Predict Earthquake Alerts?</h2>
+                <p class="mb-4 text-muted">
+                    Start with our free prediction tool or create an account for advanced features and prediction history.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('free_prediction') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-bolt me-2"></i>Try Free Now
+                    </a>
+                    <a href="{{ url_for('signup') }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Sign Up for More Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

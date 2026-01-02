@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Advanced Prediction - Quake Pred{% endblock %}
+
+{% block content %}
+<section class="prediction-section">
+    <div class="section-header">
+        <h2>Advanced Earthquake Prediction</h2>
+        <p>Enter detailed seismic parameters for comprehensive analysis</p>
+    </div>
+
+    {% if session.get('logged_in') %}
+    <div class="alert alert-success">
+        <i class="fas fa-star me-2"></i>
+        <strong>Premium Member:</strong> You have access to unlimited predictions and detailed analytics.
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Free User:</strong> You have 3 free predictions remaining today.
+        <a href="{{ url_for('signup') }}" class="alert-link">Sign up</a> for unlimited access.
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('make_prediction') }}" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="magnitude" class="form-label">
+                        <i class="fas fa-wave-square me-1"></i>Magnitude
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" step="0.01" class="form-control form-control-lg" id="magnitude" name="magnitude"
+                           placeholder="7.2" required min="1" max="10" value="{{ request.form.magnitude if request.form }}">
+                    <div class="invalid-feedback">
+                        Please enter magnitude (1.0 - 10.0)
+                    </div>
+                    <div class="form-text">
+                        <small class="text-muted">Richter scale measurement</small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar bg-info" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="depth" class="form-label">
+                        <i class="fas fa-mountain me-1"></i>Depth (km)
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" step="0.1" class="form-control form-control-lg" id="depth" name="depth"
+                           placeholder="10.5" required min="0" max="700" value="{{ request.form.depth if request.form }}">
+                    <div class="invalid-feedback">
+                        Please enter depth (0 - 700 km)
+                    </div>
+                    <div class="form-text">
+                        <small class="text-muted">Epicenter depth</small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar bg-info" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="cdi" class="form-label">
+                        <i class="fas fa-users me-1"></i>CDI
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" step="0.1" class="form-control form-control-lg" id="cdi" name="cdi"
+                           placeholder="8.0" required min="0" max="12" value="{{ request.form.cdi if request.form }}">
+                    <div class="invalid-feedback">
+                        Please enter CDI (0.0 - 12.0)
+                    </div>
+                    <div class="form-text">
+                        <small class="text-muted">Community Decimal Intensity</small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar bg-info" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="mmi" class="form-label">
+                        <i class="fas fa-ruler-combined me-1"></i>MMI
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" step="0.1" class="form-control form-control-lg" id="mmi" name="mmi"
+                           placeholder="7.5" required min="1" max="12" value="{{ request.form.mmi if request.form }}">
+                    <div class="invalid-feedback">
+                        Please enter MMI (1.0 - 12.0)
+                    </div>
+                    <div class="form-text">
+                        <small class="text-muted">Modified Mercalli Intensity</small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar bg-info" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="sig" class="form-label">
+                        <i class="fas fa-chart-line me-1"></i>Significance
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" step="1" class="form-control form-control-lg" id="sig" name="sig"
+                           placeholder="300" required min="-1000" max="1000" value="{{ request.form.sig if request.form }}">
+                    <div class="invalid-feedback">
+                        Please enter significance (-1000 - 1000)
+                    </div>
+                    <div class="form-text">
+                        <small class="text-muted">Significance score</small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar bg-info" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Tip:</strong> For accurate predictions, use recent seismic data from reliable sources.
+                    Higher magnitude, shallow depth, and high intensity values increase alert levels.
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a href="{{ url_for('free_prediction') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Free Version
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-calculator me-2"></i>Generate Advanced Prediction
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- Quick Examples -->
+<section class="mt-5">
+    <div class="container">
+        <h3 class="mb-4">Quick Example Inputs</h3>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Minor Quake</h5>
+                        <ul class="list-unstyled">
+                            <li><small>Magnitude: 4.2</small></li>
+                            <li><small>Depth: 80km</small></li>
+                            <li><small>CDI: 4.0</small></li>
+                            <li><small>MMI: 4.0</small></li>
+                            <li><small>Sig: 50</small></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline-primary w-100" onclick="fillExample(4.2, 80, 4, 4, 50)">
+                            Use This
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Moderate Quake</h5>
+                        <ul class="list-unstyled">
+                            <li><small>Magnitude: 5.8</small></li>
+                            <li><small>Depth: 30km</small></li>
+                            <li><small>CDI: 6.5</small></li>
+                            <li><small>MMI: 6.0</small></li>
+                            <li><small>Sig: 150</small></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline-warning w-100" onclick="fillExample(5.8, 30, 6.5, 6, 150)">
+                            Use This
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Strong Quake</h5>
+                        <ul class="list-unstyled">
+                            <li><small>Magnitude: 6.7</small></li>
+                            <li><small>Depth: 15km</small></li>
+                            <li><small>CDI: 8.0</small></li>
+                            <li><small>MMI: 7.5</small></li>
+                            <li><small>Sig: 300</small></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline-danger w-100" onclick="fillExample(6.7, 15, 8, 7.5, 300)">
+                            Use This
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Major Quake</h5>
+                        <ul class="list-unstyled">
+                            <li><small>Magnitude: 7.5</small></li>
+                            <li><small>Depth: 10km</small></li>
+                            <li><small>CDI: 9.5</small></li>
+                            <li><small>MMI: 8.5</small></li>
+                            <li><small>Sig: 600</small></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline-danger w-100" onclick="fillExample(7.5, 10, 9.5, 8.5, 600)">
+                            Use This
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function fillExample(magnitude, depth, cdi, mmi, sig) {
+    document.getElementById('magnitude').value = magnitude;
+    document.getElementById('depth').value = depth;
+    document.getElementById('cdi').value = cdi;
+    document.getElementById('mmi').value = mmi;
+    document.getElementById('sig').value = sig;
+
+    // Show success message
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+    alertDiv.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        Example values filled! Click "Generate Advanced Prediction" to see results.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('form').prepend(alertDiv);
+}
+</script>
+{% endblock %}
